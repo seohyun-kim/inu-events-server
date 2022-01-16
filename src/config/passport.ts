@@ -10,6 +10,7 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_REDIRECT_URIS,
+      // proxy:true,
     },
     async (accessToken, refreshToken, profile, done) => {
       const user = await User.findOne({ oauthId: profile.id });
@@ -32,10 +33,14 @@ passport.use(
 );
 
 passport.serializeUser((user:User, done) => {
-  done(null, user.id);
+  done(null, user.oauthId);
 });
 
 passport.deserializeUser(async (id, done) => {
   const user = await User.findOne(id);
+  // const user = await User.find({ where: {oauthId:id}}); // <- sql syntax error
+
   done(null, user);
 });
+
+export default passport;
