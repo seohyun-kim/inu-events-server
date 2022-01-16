@@ -13,7 +13,7 @@ passport.use(
       // proxy:true,
     },
     async (accessToken, refreshToken, profile, done) => {
-      const user = await User.findOne({ oauthId: profile.id });
+      const user = await User.findOne({where: { oauthId: profile.id }});
 
       // If user doesn't exist creates a new user. (similar to sign up)
       if (!user) {
@@ -37,10 +37,20 @@ passport.serializeUser((user:User, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await User.findOne(id);
+    try{
+        const user = await User.findOne({
+            where: {id},
+        });
+        if(!user){
+            done(new Error('no user'));
+        }
+        done(null, user);
+    }catch (err){
+        console.log(err);
+        done(err);
+    }
   // const user = await User.find({ where: {oauthId:id}}); // <- sql syntax error
 
-  done(null, user);
 });
 
 export default passport;
