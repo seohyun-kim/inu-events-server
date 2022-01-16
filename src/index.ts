@@ -1,4 +1,5 @@
 import express from "express";
+import "dotenv/config"
 import authRoutes from "./routes/authRoutes";
 import profileRoutes from "./routes/pathRoutes";
 import "./config/passport";

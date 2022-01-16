@@ -5,3 +5,5 @@ build/
 tmp/
 temp/
 .env
+test/hyun_test.http
+ts-react-tutorial
