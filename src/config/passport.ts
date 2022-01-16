@@ -36,11 +36,9 @@ passport.serializeUser((user:User, done) => {
   done(null, user.oauthId);
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser<User>(async (id, done) => {
     try{
-        const user = await User.findOne({
-            where: {id},
-        });
+        const user = await User.findOne(id);
         if(!user){
             done(new Error('no user'));
         }
