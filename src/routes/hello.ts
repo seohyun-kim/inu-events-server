@@ -1,10 +1,10 @@
-import * as Router from '@koa/router';
+// import * as Router from '@koa/router';
 
-const router = new Router();
+// const router = new Router();
 
-router.get('/hello', async (ctx) => {
-  console.log('요청옴!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-  ctx.body = 'ㅎㅇㅎㅇ';
-});
+// router.get('/hello', async (ctx) => {
+//   console.log('요청옴!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//   ctx.body = 'ㅎㅇㅎㅇ';
+// });
 
-export default router;
+// export default router;

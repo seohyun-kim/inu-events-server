@@ -1,24 +1,33 @@
-import 'reflect-metadata';
-import 'dotenv/config';
-import * as Koa from 'koa';
+import express from "express";
+import authRoutes from "./routes/authRoutes";
+import profileRoutes from "./routes/pathRoutes";
+import "./config/passport";
+import cookieSession from "cookie-session";
+import passport from "passport";
 
-import helloRoutes from './routes/hello';
-import byeRoutes from './routes/bye';
-// 여기에 추가
+const app = express();
 
-async function run() {
-  // const connection = await createConnection();
-  // await connection.synchronize(true);
+app.set("view engine", "ejs");
 
-  const app = new Koa();
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: ["test"],
+  })
+);
 
-  app
-    .use(helloRoutes.routes()).use(helloRoutes.allowedMethods())
-    .use(byeRoutes.routes()).use(byeRoutes.allowedMethods())
-    // 여기에 추가
-    .listen(process.env.PORT || 3000);
+app.use(passport.initialize());
+app.use(passport.session());
 
-  console.log('서버시작!!!!!!!!!!');
-}
 
-run().then().catch((e) => console.log(e));
+
+app.use("/auth", authRoutes);
+app.use("/profile", profileRoutes);
+
+app.get("/", (req, res) => {
+  res.render("home", { user: req.user });
+});
+
+app.listen(8000, () => {
+  console.log("App listening on port: " + 8000);
+});
